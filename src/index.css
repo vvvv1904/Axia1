@@ -1,0 +1,180 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  /* Axia Brand Colors — constant across themes */
+  --color-axia-gold: #C8A04D;
+  --color-axia-gold-light: #E8C86A;
+  --color-axia-gold-dark: #9A7A2D;
+
+  /* Theme-aware semantic tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-surface: var(--surface);
+  --color-surface-foreground: var(--surface-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border-color);
+  --color-input: var(--input-color);
+}
+
+/* ─── LIGHT MODE — Worklane exact palette adapted for Axia gold ─── */
+:root {
+  --background: #eef0f4;        /* Slightly deeper for card contrast */
+  --foreground: #1a1a1c;        /* Worklane secondary */
+  --card: #ffffff;               /* white cards */
+  --card-foreground: #1a1a1c;
+  --surface: #f4f5f8;           /* Worklane background-2 */
+  --surface-foreground: #1a1a1c;
+  --brand: #9A7A2D;             /* Darker gold for text readability in light mode */
+  --brand-foreground: #070F1B;
+  --muted: #eef0f4;             /* Deeper muted bg for contrast */
+  --muted-foreground: #475569;
+  --border-color: #c8ced8;      /* More visible border for light mode */
+  --input-color: #c8ced8;
+}
+
+/* ─── DARK MODE — Clean deep navy palette ─── */
+.dark {
+  --background: #030619;        /* Deep navy — clean professional dark */
+  --foreground: #fcfcfc;        /* Bright white text */
+  --card: #0a1128;              /* Subtle card lift */
+  --card-foreground: #fcfcfc;
+  --surface: #060d20;           /* Surface layer */
+  --surface-foreground: #fcfcfc;
+  --brand: #C8A04D;
+  --brand-foreground: #030619;
+  --muted: #0a1128;             /* Muted bg */
+  --muted-foreground: #94A3B8;
+  --border-color: #1a2444;      /* Clean subtle border */
+  --input-color: #1a2444;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.35s ease, color 0.35s ease;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Mobile: ensure minimum tap target sizes */
+@media (max-width: 640px) {
+  button, a {
+    min-height: 44px;
+  }
+}
+
+/* Subtle noise texture overlay — adjusted per theme */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.012;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+.dark body::before {
+  opacity: 0.018;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--muted); }
+::-webkit-scrollbar-thumb { background: #C8A04D; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #B08E3A; }
+
+/* Smooth theme transitions for key elements */
+nav, section, footer, .theme-transition {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.35s ease;
+}
+
+/* Hero reveal animation */
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-reveal-1 { animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both; }
+.animate-reveal-2 { animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both; }
+.animate-reveal-3 { animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
+.animate-reveal-4 { animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both; }
+.animate-reveal-5 { animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both; }
+
+/* Gold shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.gold-shimmer:hover {
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Duct-tape jitter */
+@keyframes jitter {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+  50% { transform: translate(1px, -1px) rotate(0.5deg); }
+  75% { transform: translate(-1px, -1px) rotate(-0.3deg); }
+}
+.jitter-hover:hover { animation: jitter 0.3s ease-in-out; }
+
+/* Hero mesh gradient backgrounds */
+.hero-gradient-light {
+  background:
+    radial-gradient(73% 81% at 19% 48%, rgba(154, 122, 45, 0.18) 0%, transparent 100%),
+    radial-gradient(50% 60% at 80% 20%, rgba(200, 160, 77, 0.14) 0%, transparent 100%),
+    radial-gradient(40% 50% at 60% 80%, rgba(154, 122, 45, 0.10) 0%, transparent 100%),
+    radial-gradient(30% 40% at 90% 70%, rgba(180, 140, 60, 0.07) 0%, transparent 100%),
+    linear-gradient(180deg, #eef0f4 0%, #f4f5f8 50%, #eef0f4 100%);
+}
+
+.hero-gradient-dark {
+  background:
+    radial-gradient(60% 70% at 15% 40%, rgba(200, 160, 77, 0.18) 0%, transparent 100%),
+    radial-gradient(50% 60% at 85% 25%, rgba(200, 160, 77, 0.12) 0%, transparent 100%),
+    radial-gradient(45% 55% at 50% 80%, rgba(10, 17, 40, 0.50) 0%, transparent 100%),
+    linear-gradient(180deg, #030619 0%, #060d20 40%, #030619 100%);
+}
+
+/* Hero text gradient — animated gold shimmer */
+.hero-text-gradient {
+  background-image: linear-gradient(135deg, #C8A04D 0%, #E8C86A 30%, #FFF0D4 50%, #E8C86A 70%, #C8A04D 100%);
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% auto;
+  animation: shimmer 6s linear infinite;
+}
+
+/* Theme toggle pill — smooth knob transition */
+.theme-toggle-knob {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+}
+
+/* Theme toggle — hide icon behind knob */
+.theme-toggle-btn:hover {
+  border-color: #C8A04D !important;
+}
+.dark .theme-toggle-btn:hover {
+  border-color: #C8A04D !important;
+}
